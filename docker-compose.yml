@@ -1,0 +1,46 @@
+name: test_php
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8383:80"
+    networks:
+      - testphp
+    volumes:
+      - ./form:/var/www/html
+      - .env:/var/www/html/.env
+    env_file:
+      - .env
+  mysql:
+    container_name: mysql-server
+    image: 'mysql:8.0'
+    ports:
+      - ${DB_PORT:-3306}:3306
+    networks:
+      - testphp
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PWD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PWD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+  php-my-admin:
+    container_name: php-my-admin
+    image: 'phpmyadmin:latest'
+    ports:
+      - 8081:80
+    networks:
+      - testphp
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PWD}
+volumes:
+  mysql_data:
+    driver: local
+networks:
+  testphp:
+    driver: bridge
