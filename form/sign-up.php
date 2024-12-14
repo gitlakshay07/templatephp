@@ -9,6 +9,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $current_date = date('Y-m-d H:i:s', time());
 
     $sql = "SELECT * FROM `users` WHERE `email` = ?";
     $select = $conn1->prepare($sql);
@@ -25,6 +26,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
             "data" => []
         );
     }else{
+        $insData = "INSERT INTO `users` (email, `password`, updated, created) VALUES (?,?,?,?)";
+        $stmt = $conn1->prepare($insData);
+        $stmt->bind_param("ssss",$email, $password, $current_date, $current_date);
+        $stmt->execute();
+        $stmt->close();
+
         $response = array(
             "success" => true,
             "message" => "hello user!",
@@ -35,7 +42,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($response);
     exit;
-
 }
 
 render_view($template, $layout);

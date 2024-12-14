@@ -42,8 +42,6 @@
   </style>
 </head>
 
-
-
 <body class="<?php echo $class ?? 'bg-gray-200' ?>">
   <main class="main-content  mt-0">
     <?php include_once($view); ?>

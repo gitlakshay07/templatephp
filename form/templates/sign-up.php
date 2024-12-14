@@ -28,7 +28,7 @@
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label" for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password">
-                    <label  class="error w-100" for="password"></label>
+                    <label class="error w-100" for="password"></label>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label" for="conf_password">Confirm Password</label>
