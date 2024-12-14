@@ -2,6 +2,10 @@
 session_start();
 require_once('./config.php');
 
+if(is_logged_in()){
+    header("Location: /dashboard");
+}
+
 $layout = 'auth';
 $template = basename(__FILE__); 
 
@@ -30,12 +34,17 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
         $stmt = $conn1->prepare($insData);
         $stmt->bind_param("ssss",$email, $password, $current_date, $current_date);
         $stmt->execute();
+        $user_id = mysqli_insert_id($conn1);
         $stmt->close();
+
+        $_SESSION["user_id"] = $user_id;
 
         $response = array(
             "success" => true,
             "message" => "hello user!",
-            "data" => $result
+            "data" => [
+                'redirect_url' => '/dashboard'
+            ]
         );
     };
 

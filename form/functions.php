@@ -13,3 +13,11 @@ function render_view($template, $layout, $params = []){
     $layout = __DIR__ . '/layout/'. $layout . '.php';
     require_once($layout);
 }
+
+function is_logged_in(){
+    if(isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && intval($_SESSION['user_id']) > 0 ){
+        return true;
+    }
+
+    return false;
+}

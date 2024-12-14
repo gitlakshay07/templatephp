@@ -28,6 +28,8 @@
                     .removeClass("bg-gradient-dark")
                     .addClass("bg-success")
                     .addClass("text-white")
+
+                    window.location.href = result.data.redirect_url;
                 }else{
                     $("#submitbtn")
                     .html("Oops! Error!")
