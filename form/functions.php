@@ -1,5 +1,6 @@
 <?php 
 
+
 function debug_pre($value, $exit = false){
     echo "<pre>";
     print_r($value);
@@ -20,4 +21,28 @@ function is_logged_in(){
     }
 
     return false;
+}
+
+function get_userdata(int $user_id, $db_conn){
+    if($user_id > 0){
+        $sql = "SELECT * FROM `userdata` WHERE `user_id` = ?";
+        $select = $db_conn->prepare($sql);
+        $select->bind_param("s", $user_id);
+        $select->execute();
+        $res = $select->get_result();
+        $result = $res->fetch_all(MYSQLI_ASSOC);
+        $select->close();
+
+        $userData = [];
+
+        foreach ($result as $value) {
+            $dataKey = $value['datakey'];
+            $dataValue = $value['datavalue'];
+            $userData[$dataKey] = $dataValue;
+        }
+
+        return $userData;
+    }
+
+    return [];
 }

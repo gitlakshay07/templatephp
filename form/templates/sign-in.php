@@ -27,14 +27,16 @@
             </div>
           </div>
           <div class="card-body">
-            <form role="form" class="text-start">
+            <form role="form" class="text-start" method="POST" id="signinform">
               <div class="input-group input-group-outline my-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control">
+                <label class="error w-100" for="email"></label>
               </div>
               <div class="input-group input-group-outline mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control">
+                <label class="error w-100" for="password"></label>
               </div>
               <div class="d-flex justify-content-between">
               <div class="form-check form-switch d-flex align-items-center mb-3">
@@ -46,7 +48,8 @@
               </div>
               </div>
               <div class="text-center">
-                <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
+                <label class="error w-100" for="signinform"></label>
+                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
               </div>
               <p class="mt-4 text-sm text-center">
                 Don't have an account?

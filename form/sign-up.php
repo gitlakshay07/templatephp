@@ -12,7 +12,7 @@ $template = basename(__FILE__);
 if(isset($_POST['action']) && $_POST['action'] == 'signup'){
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $current_date = date('Y-m-d H:i:s', time());
 
     $sql = "SELECT * FROM `users` WHERE `email` = ?";
@@ -38,6 +38,23 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
         $stmt->close();
 
         $_SESSION["user_id"] = $user_id;
+
+        if(!empty($user_id)){
+            $userData = array(
+                "name" => $name,
+                "dob" => date('d-m-Y H:i:s')
+            );
+
+            $insUserData = "INSERT INTO `userdata` (`user_id`, `datakey`, `datavalue`) VALUES (?,?,?)";
+            $stmt = $conn1->prepare($insUserData);
+
+            foreach ($userData as $key => $value) {
+                $stmt->bind_param("iss",$user_id, $key, $value);
+                $stmt->execute();
+            }
+
+            $stmt->close();
+        }
 
         $response = array(
             "success" => true,

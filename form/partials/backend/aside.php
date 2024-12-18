@@ -66,6 +66,12 @@
             <span class="nav-link-text ms-1">Sign Up</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="signout">
+            <i class="material-symbols-rounded opacity-5">logout</i>
+            <span class="nav-link-text ms-1">Signout</span>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
