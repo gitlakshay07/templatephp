@@ -10,14 +10,16 @@
             </div>
           </div>
           <div class="card-body">
-            <form role="form" method="post" class="text-start">
+            <form role="form" id="forgetform" method="POST" action="/authemail" class="text-start">
               <div class="input-group input-group-outline mb-3">
                 <label class="form-label" for="email">Email</label>
                 <input type="email" class="form-control" name="email" id="email">
                 <label class="error w-100" for="email"></label>
               </div>
               <div class="text-center">
-                <button type="submit" name="forget" value="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Forget Password</button>
+                <input type="hidden" name="action" value="forget">
+                <label class="error w-100" for="forgetform"></label>
+                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Forget Password</button>
               </div>
             </form>
           </div>

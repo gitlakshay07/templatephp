@@ -22,11 +22,33 @@ function is_logged_in(){
     return false;
 }
 
-function get_userdata(int $user_id, $db_conn) {
+function get_userdata($datakey = '', int $user_id = null) {
+    global $conn1;
+
+    if(!$user_id){
+
+        if(!isset($_SESSION['user_id'])){
+            return false;
+        }
+
+        $user_id = $_SESSION['user_id'];
+    }
+
     if($user_id > 0){
         $sql = "SELECT * FROM `userdata` WHERE `user_id` = ?";
-        $stmt = $db_conn->prepare($sql);
-        $stmt->bind_param("s", $user_id);
+
+        if(!empty($datakey)){
+            $sql .= ' AND `datakey` = ?';
+        }
+
+        $stmt = $conn1->prepare($sql);
+
+        if(!empty($datakey)){
+            $stmt->bind_param("ss", $user_id, $datakey);
+        }else{
+            $stmt->bind_param("s", $user_id);
+        }
+        
         $stmt->execute();
         $res = $stmt->get_result();
         $result = $res->fetch_all(MYSQLI_ASSOC);
@@ -34,10 +56,20 @@ function get_userdata(int $user_id, $db_conn) {
 
         $userData = [];
 
-        foreach($result as $value){
-            $datakey = $value['datakey'];
-            $datavalue = $value['datavalue'];
-            $userData[$datakey] = $datavalue;
+        if(!empty($datakey)){
+            if(count($result) > 1){
+                foreach($result as $value){
+                    $userData[] = $value['datavalue'];
+                }
+            }else{
+                $userData = $result[0]['datavalue'];
+            }
+        }else{
+            foreach($result as $value){
+                $datakey = $value['datakey'];
+                $datavalue = $value['datavalue'];
+                $userData[$datakey] = $datavalue;
+            }
         }
 
         return $userData;
@@ -45,4 +77,59 @@ function get_userdata(int $user_id, $db_conn) {
 
     return [];
    
+}
+
+function update_userdata(string $datakey, $datavalue, $user_id = '', $insert = false){
+    global $conn1;
+
+    if(empty($user_id)){
+
+        if(!isset($_SESSION['user_id'])){
+            return false;
+        }
+
+        $user_id = $_SESSION['user_id'];
+    }
+    if(false === $insert){
+        $sql = "SELECT `ID` FROM `userdata` WHERE `user_id` = ? AND `datakey` = ?";
+        $stmt = $conn1->prepare($sql);
+        $stmt->bind_param("is", $user_id, $datakey);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+        $stmt->close();
+        if(isset($row['ID']) && $dataID = $row['ID']){
+            $sql = "UPDATE `userdata` SET `datavalue` = ? WHERE `ID` = ?";
+            $stmt = $conn1->prepare($sql);
+            $stmt->bind_param("si", $datavalue, $dataID);
+            $stmt->execute();
+            $stmt->close();
+
+            return true;
+        }
+    }
+
+    $sql = "INSERT INTO `userdata` (`user_id`, `datakey`, `datavalue`) VALUES (?, ?, ?)";
+    $stmt = $conn1->prepare($sql);
+    $stmt->bind_param("iss", $user_id, $datakey, $datavalue);
+    $stmt->execute();
+    $stmt->close();
+
+    return true;
+}
+
+function get_user_id($email){
+    global $conn1;
+    
+    $sql = "SELECT `ID` FROM `users` WHERE `email` = ?";
+    $stmt = $conn1->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $result = $row['ID'];
+    $stmt->close();
+
+    return $result;
+
 }

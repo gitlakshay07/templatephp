@@ -31,7 +31,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
             "data" => []
         );
     }else{
-        $insData = "INSERT INTO `users` (`email`, `password`, `updated`, `created`) VALUES (?,?,?,?,?)";
+        $insData = "INSERT INTO `users` (`email`, `password`, `updated`, `created`) VALUES (?,?,?,?)";
         $stmt = $conn1->prepare($insData);
         $stmt->bind_param("ssss", $email, $password, $current_date, $current_date);
         $stmt->execute();
@@ -55,6 +55,27 @@ if(isset($_POST['action']) && $_POST['action'] == 'signup'){
             }
 
             $stmt->close();
+
+            $sql = "SELECT * FROM `users` WHERE `ID` = ?";
+            $res = $conn1->prepare($sql);
+            $res->bind_param("i", $user_id);
+            $res->execute();
+            $response = $res->get_result();
+            $result = $response->fetch_all(MYSQLI_ASSOC);
+            $res->close();
+
+            if(count($result)){
+
+                // debug_pre($result);
+        
+                $user = $result[0];
+                unset($user['password']);
+                $userData = get_userData('',$user['ID']);
+                $user = array_merge($user, $userData);
+
+                $_SESSION['user'] = $user;
+    
+            }
         }
 
         $response = array(
