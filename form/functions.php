@@ -46,3 +46,18 @@ function get_userdata(int $user_id, $db_conn){
 
     return [];
 }
+
+function get_current_route(){
+    $url = strtok($_SERVER["REQUEST_URI"], '?');
+
+    return $url;
+}
+
+function check_route($path){
+
+
+    if(get_current_route() === $path)
+    return true;
+
+    return false;
+}

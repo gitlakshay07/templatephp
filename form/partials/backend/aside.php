@@ -10,37 +10,37 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active bg-gradient-dark text-white" href="dashboard">
+          <a class="nav-link <?php echo check_route('/dashboard/')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/">
             <i class="material-symbols-rounded opacity-5">dashboard</i>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="tables">
+          <a class="nav-link <?php echo check_route('/dashboard/tables')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/tables">
             <i class="material-symbols-rounded opacity-5">table_view</i>
             <span class="nav-link-text ms-1">Tables</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="billing">
+          <a class="nav-link <?php echo check_route('/dashboard/billing')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/billing">
             <i class="material-symbols-rounded opacity-5">receipt_long</i>
             <span class="nav-link-text ms-1">Billing</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="virtual-reality">
+          <a class="nav-link <?php echo check_route('/dashboard/virtual-reality')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/virtual-reality">
             <i class="material-symbols-rounded opacity-5">view_in_ar</i>
             <span class="nav-link-text ms-1">Virtual Reality</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="rtl">
+          <a class="nav-link <?php echo check_route('/dashboard/rtl')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/rtl">
             <i class="material-symbols-rounded opacity-5">format_textdirection_r_to_l</i>
             <span class="nav-link-text ms-1">RTL</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="notification">
+          <a class="nav-link <?php echo check_route('/dashboard/notification')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/notification">
             <i class="material-symbols-rounded opacity-5">notifications</i>
             <span class="nav-link-text ms-1">Notifications</span>
           </a>
@@ -49,35 +49,19 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="profile">
+          <a class="nav-link <?php echo check_route('/dashboard/profile')? 'active bg-gradient-dark text-white' : 'text-dark'; ?>" href="/dashboard/profile">
             <i class="material-symbols-rounded opacity-5">person</i>
             <span class="nav-link-text ms-1">Profile</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="sign-in">
-            <i class="material-symbols-rounded opacity-5">login</i>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="sign-up">
-            <i class="material-symbols-rounded opacity-5">assignment</i>
-            <span class="nav-link-text ms-1">Sign Up</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="signout">
-            <i class="material-symbols-rounded opacity-5">logout</i>
-            <span class="nav-link-text ms-1">Signout</span>
-          </a>
-        </li>
       </ul>
     </div>
+    <?php
+      // debug_pre(get_current_route());
+    ?>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
-        <a class="btn btn-outline-dark mt-4 w-100" href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard?ref=sidebarfree" type="button">Documentation</a>
-        <a class="btn bg-gradient-dark w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
+        <a class="btn bg-gradient-dark w-100" href="/signout" type="button">Signout</a>
       </div>
     </div>
 </aside>

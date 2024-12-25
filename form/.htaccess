@@ -3,6 +3,8 @@ Options +FollowSymLinks -MultiViews
 RewriteEngine On
 RewriteBase /
 
+ErrorDocument 404   /404.php
+
 ## hide .php extension
 # To externally redirect /dir/foo.php to /dir/foo
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
