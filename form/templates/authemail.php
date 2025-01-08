@@ -10,7 +10,7 @@
             </div>
           </div>
           <div class="card-body">
-            <form role="form" method="post" id="otpform" class="text-start">
+            <form role="form" action="/sign-in" method="post" id="otpform" class="text-start">
               <div class="input-group input-group-outline mb-3">
                 <label class="form-label" for="otp">OTP</label>
                 <input type="text" class="form-control" name="otp" id="otp">
@@ -30,7 +30,8 @@
               </div>
               <div class="text-center">
                 <label class="error w-100" for="otpform"></label>
-                <button type="submit" name="reset" value="submit" id="submitbtn" class="btn bg-gradient-dark w-100 my-4 mb-2">Submit</button>
+                <input type="hidden" id="email" name="email" value="<?php echo $_POST['email'] ?>">
+                <button type="submit" id="submitbtn" class="btn bg-gradient-dark w-100 my-4 mb-2">Submit</button>
               </div>
             </form>
           </div>

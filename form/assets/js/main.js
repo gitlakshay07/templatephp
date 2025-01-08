@@ -6,17 +6,23 @@
     otpHandler: function(){
       $("#otp").on("input", function(){
         var otpVal = $(this).val();
+        var email = $("#email").val();
         if(otpVal.length === 6){
           $.ajax({
-            url: '/authmail',
+            url: '/authemail',
             type: "POST",
-            data: {otp: otpVal},
-            success: function (response) {
-              if(response === "true"){
+            data: {
+              otp: otpVal,
+              email: email
+            },
+            dataType: "json",
+            success: function (result) {
+              if(result.success){
                 $("#otp").prop("disabled", true);
                 $("#newpassfield").removeClass("d-none");
-              }else {
-                $("label.error[for=otpform]").html(response.message).show();
+                $("label.error[for=otpform]").hide();
+              } else {
+                $("label.error[for=otpform]").html(result.message).show();
               }
             }
           })
@@ -34,7 +40,7 @@
           });
           $.ajax({
             type: "POST",
-            url: "/authmail",
+            url: "/authemail",
             data: formData,
             dataType: "json",
             success: function (result) {
@@ -44,12 +50,12 @@
                 }
                 if(result.success){
                     $("#submitbtn")
-                    .html("Password Successfuly Changed!")
+                    .html("Password Successfully Changed!")
                     .removeClass("bg-gradient-dark")
                     .addClass("bg-success")
                     .addClass("text-white")
 
-                    this.formElm.submit();
+                    window.location.href = "/sign-in";
                 }else{
                   $("label.error[for=otpform]").html(result.message).show();
                 }
@@ -250,6 +256,90 @@
       this.submit();
     },
   };
+  var info = {
+    formElm: $("#personalinfoform"),
+    submit: function () {
+      this.formElm.on("submit", function (e) {
+        e.preventDefault();
+        if (info.formElm.valid()) {
+          let formData = info.formElm.serializeArray();
+          formData.push({
+            name: "action",
+            value: "updateinfo"
+          })
+          $.ajax({
+            type: "POST",
+            url: "/dashboard/profile",
+            data: formData,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if(!isJson(result)){
+                    result = $.parseJSON(result);
+                }
+                if(result.success){
+                    $("#submitbtn")
+                    .html("Saved!")
+                    .removeClass("bg-gradient-dark")
+                    .addClass("bg-success")
+                    .addClass("text-white");
+                    
+                    $("#personalinfo").removeClass("d-none");
+                    $("#editpersonalinfo").addClass("d-none");
+
+                    this.formElm.submit();
+                }else{
+                    $("#submitbtn")
+                    .html("Oops! Error!")
+                    .removeClass("bg-gradient-dark")
+                    .addClass("bg-danger")
+                    .addClass("text-white")
+                }
+            }
+          });
+        }
+        console.log("info called");
+      });
+    },
+    validation: function () {
+      this.formElm.validate({
+        rules: {
+          name: {
+            required: true,
+            minlength: 3,
+            maxlength: 30
+          },
+          mobile: {
+            required: true,
+            minlength: 10
+          },
+          location: {
+            required: true,
+            minlength: 3,
+          }
+        },
+        messages: {
+          name: {
+            required: "Please enter your name",
+            minlength: "name must be at least 3 characters long",
+            maxlength: "name must be at most 30 characters long",
+          },
+          mobile: {
+            required: "Please enter your mobile number",
+            minlength: "mobile number must be at least 10 characters long",
+          },
+          location: {
+            required: "Please enter your location",
+            minlength: "location must be at least 3 characters long",
+          },
+        },
+      });
+    },
+    init: function () {
+      this.validation();
+      this.submit();
+    }
+  }
 
   function isJson(str){
     if(typeof str === 'object'){
@@ -264,7 +354,9 @@
         return true;
     }
   }
+
   $(document).ready(function () {
+    // Form Validation Section
     if($("#signupform").length > 0){
       signup.init();
     }
@@ -276,5 +368,21 @@
     if($("#otpform").length > 0){
       otp.init();
     }
+
+    if($("#personalinfoform").length > 0){
+      info.init();
+    }
+
+    // Personal Information Section
+    $("#editinfo").on("click",function(){
+      $("#personalinfo").addClass("d-none");
+      $("#editpersonalinfo").removeClass("d-none");
+    })
+
+    $("#canclebtn").on("click", function(){
+      $("#personalinfo").removeClass("d-none");
+      $("#editpersonalinfo").addClass("d-none");
+    })
+
   });
 })(jQuery);

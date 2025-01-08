@@ -11,7 +11,7 @@
         <div class="col-auto my-auto">
             <div class="h-100">
                 <h5 class="mb-1">
-                    Richard Davis
+                    <?php echo $_SESSION['user']['name'] ?>
                 </h5>
                 <p class="mb-0 font-weight-normal text-sm">
                     CEO / Co-Founder
@@ -96,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-xl-4">
+            <div class="col-12 col-xl-4 " id="personalinfo">
                 <div class="card card-plain h-100">
                     <div class="card-header pb-0 p-3">
                         <div class="row">
@@ -104,9 +104,9 @@
                                 <h6 class="mb-0">Profile Information</h6>
                             </div>
                             <div class="col-md-4 text-end">
-                                <a href="javascript:;">
+                                <div id="editinfo" class="pointer">
                                     <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,24 +116,82 @@
                         </p>
                         <hr class="horizontal gray-light my-4">
                         <ul class="list-group">
-                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; Alec M. Thompson</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; (44) 123 1234 123</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; alecthompson@mail.com</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; USA</li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; <?php echo $_SESSION['user']['name']?></li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; <?php echo $_SESSION['user']['mobile']?> </li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; <?php echo $_SESSION['user']['email']?></li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; <?php echo $_SESSION['user']['location']?></li>
                             <li class="list-group-item border-0 ps-0 pb-0">
                                 <strong class="text-dark text-sm">Social:</strong> &nbsp;
-                                <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
+                                <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="<?php echo $_SESSION['user']['facebook']?>" target="_blank">
                                     <i class="fab fa-facebook fa-lg"></i>
                                 </a>
-                                <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
+                                <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="<?php echo $_SESSION['user']['twitter']?>" target="_blank">
                                     <i class="fab fa-twitter fa-lg"></i>
                                 </a>
-                                <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
+                                <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="<?php echo $_SESSION['user']['instagram']?>" target="_blank">
                                     <i class="fab fa-instagram fa-lg"></i>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4 d-none" id="editpersonalinfo" >
+                <div class="card card-plain h-100">
+                    <form role="form" method="post" id="personalinfoform">
+                        <div class="card-header pb-0 p-3">
+                            <div class="row">
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <h6 class="mb-0">Edit Information</h6>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <div class="d-grid gap-1 d-md-flex justify-content-md-end align-items-center">
+                                        <button type="button" id="canclebtn" class="btn btn-danger mb-0 px-2 py-1">Cancle</button>
+                                        <button id="submitbtn" type="submit" class="btn btn-primary mb-0 px-2 py-1 ">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <hr class="horizontal mt-0 gray-light">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 ps-0 pt-0 d-flex align-items-center">
+                                    <label for="name" class="form-label w-50 m-0"><strong class="text-dark">Full Name:</strong></label>
+                                    <input type="text" class="form-control" name="name" id="name" value="<?php echo $_SESSION['user']['name'] ?>">
+                                </li>
+                                <label class="error w-100 text-danger" for="name"></label>
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center">
+                                    <label for="mobile" class="form-label m-0 w-50"><strong class="text-dark">Mobile:</strong></label>
+                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="+91 23245426">
+                                </li>
+                                <label class="error w-100 text-danger" for="mobile"></label>
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center">
+                                    <label for="email" class="form-label m-0 w-50"><strong class="text-dark">Email</strong></label>
+                                    <input type="text" class="form-control" name="email" id="email" disabled value="<?php echo $_SESSION['user']['email'] ?>">
+                                </li>
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center">
+                                    <label for="location" class="form-label m-0 w-50"><strong class="text-dark">Location:</strong></label>
+                                    <input type="text" class="form-control" name="location" id="location" placeholder="USA">
+                                </li>
+                                <strong class="text-dark text-sm">Socials:</strong>
+                                <ul class="list-group">
+                                    <li class="list-group-item border-0 p-0 text-sm d-flex align-items-center">
+                                        <label for="facebook" class="form-label m-0 w-50"><strong class="text-dark">facebook:</strong></label>
+                                        <input type="text" class="form-control" name="facebook" id="facebook" placeholder="https//facebook.com/">
+                                    </li>
+                                    <li class="list-group-item border-0 p-0 text-sm d-flex align-items-center">
+                                        <label for="twitter" class="form-label m-0 w-50"><strong class="text-dark">twitter:</strong></label>
+                                        <input type="text" class="form-control" name="twitter" id="twitter" placeholder="https//twitter.com/">
+                                    </li>
+                                    <li class="list-group-item border-0 p-0 text-sm d-flex align-items-center">
+                                        <label for="instagram" class="form-label m-0 w-50"><strong class="text-dark">instagram:</strong></label>
+                                        <input type="text" class="form-control" name="instagram" id="instagram" placeholder="https//instagram.com/">
+                                    </li>
+                                </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-12 col-xl-4">

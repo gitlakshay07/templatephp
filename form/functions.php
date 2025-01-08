@@ -90,7 +90,8 @@ function update_userdata(string $datakey, $datavalue, $user_id = '', $insert = f
 
         $user_id = $_SESSION['user_id'];
     }
-    if(false === $insert){
+    if(false === $insert){ 
+        // Query for already having data key and value 
         $sql = "SELECT `ID` FROM `userdata` WHERE `user_id` = ? AND `datakey` = ?";
         $stmt = $conn1->prepare($sql);
         $stmt->bind_param("is", $user_id, $datakey);
@@ -98,6 +99,7 @@ function update_userdata(string $datakey, $datavalue, $user_id = '', $insert = f
         $res = $stmt->get_result();
         $row = $res->fetch_assoc();
         $stmt->close();
+        // Return the ID where the datakey is present
         if(isset($row['ID']) && $dataID = $row['ID']){
             $sql = "UPDATE `userdata` SET `datavalue` = ? WHERE `ID` = ?";
             $stmt = $conn1->prepare($sql);
@@ -132,4 +134,17 @@ function get_user_id($email){
 
     return $result;
 
+}
+
+function get_current_route(){
+    $url = strtok($_SERVER["REQUEST_URI"], '?');
+    return $url;
+}
+
+function check_route($path){
+    if(get_current_route() === $path){
+        return true;
+    }
+
+    return false;
 }

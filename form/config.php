@@ -8,8 +8,8 @@ error_reporting(E_ALL);
 
 define('BASEPATH', __DIR__);
 
-require_once('./vendor/autoload.php');
-require_once('./functions.php');
+require_once(BASEPATH . '/vendor/autoload.php');
+require_once(BASEPATH . '/functions.php');
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 

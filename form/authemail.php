@@ -19,21 +19,31 @@ if (isset($_POST['action']) && $_POST['action'] == 'forget') {
         update_userdata('otp', rand(100000, 999999), $user_id);
     }
 }
-
 if (isset($_POST['otp'])) {
     $auth_code = $_POST['otp'];
     $email = $_POST['email'];
+
     $userId = get_user_id($email);
     $db_code = get_userdata('otp', $userId);
 
-    if ($auth_code === $db_code) {
-        echo json_encode(['success' => true]);
+    if (!empty($db_code) && $auth_code == $db_code) {
+        $response = array(
+            "success" => true,
+            "message" => "OTP verified!"
+        );
     } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid OTP']);
+        $response = array(
+            "success" => false,
+            "message" => "Incorrect OTP"
+        );
     }
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($response);
+    exit;
 }
 
-if (isset($_POST['reset']) && $_POST['reset'] == 'submit') {
+if (isset($_POST['action']) && $_POST['action'] == 'reset') {
     $email = $_POST['email'];
     $userId = get_user_id($email);
     $cl_pwd = md5($_POST['password']);
@@ -53,11 +63,20 @@ if (isset($_POST['reset']) && $_POST['reset'] == 'submit') {
         $stmt->execute();
         $stmt->close();
 
-        header("Location: /sign-in");
-        exit();
+        $response = array(
+            "success" => true,
+            "message" => "Password reset successfull!"
+        );
     }else{
-        echo json_encode(['success' => false, 'message' => 'Password reset failed']);
+        $response = array(
+            "success" => false,
+            "message" => "Password reset failed!"
+        );
     }
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($response);
+    exit;
 }
 
 render_view($template, $layout);

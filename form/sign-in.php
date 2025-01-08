@@ -15,12 +15,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'signin'){
     $email = $_POST['email'];
     $cl_pwd = md5($_POST['password']);
 
-    $response = array(
-        "success" => false,
-        "message" => "No user found",
-        "data" => []
-    );
-
     $sql = "SELECT * FROM `users` WHERE `email` = ? AND `password` = ?";
     $stmt = $conn1->prepare($sql);
     $stmt->bind_param("ss", $email, $cl_pwd);
@@ -35,7 +29,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'signin'){
 
         $user = $result[0];
         unset($user['password']);
-        $userData = get_userData($user['ID'], $conn1);
+        $userData = get_userdata('',$user['ID']);
         $user = array_merge($user, $userData);
 
         $_SESSION['user'] = $user;
@@ -45,6 +39,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'signin'){
             "success" => true,
             "message" => "Logged In",
             "data" => $user
+        );
+    }else{
+        $response = array(
+            "success" => false,
+            "message" => "No user found",
+            "data" => []
         );
     }
 
